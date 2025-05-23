@@ -6,10 +6,19 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CategorizadorDeProdutos",
+            "request": "launch",
+            "mainClass": "br.com.ppaul.mochamind.CategorizadorDeProdutos",
+            "projectName": "mochamind",
+            "envFile": "${workspaceFolder}/.env",
+        },
+        {
+            "type": "java",
             "name": "TestaIntegracao",
             "request": "launch",
             "mainClass": "br.com.ppaul.mochamind.TestaIntegracao",
-            "projectName": "mochamind"
+            "projectName": "mochamind",
+            "envFile": "${workspaceFolder}/.env",
         }
     ]
 }

@@ -54,6 +54,56 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * LLMService fornece uma API de alto nível para interagir com endpoints de LLM (Large Language Model) compatíveis com a API do OpenAI.
+ * <p>
+ * Esta classe envolve a interface OpenAiApi e expõe métodos para gerenciamento de modelos, completions, chat, operações de arquivo,
+ * fine-tuning, geração de imagem, transcrição e tradução de áudio, moderação, assistentes, threads, mensagens e informações de cobrança.
+ * <p>
+ * Ela suporta operações síncronas e de streaming (Flowable) e lida com o parsing de erros para respostas da API do OpenAI.
+ * <p>
+ * Uso típico:
+ * <pre>
+ *     LLMService service = new LLMService("sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+ *     CompletionResult result = service.createCompletion(request);
+ * </pre>
+ * <p>
+ * Para cenários avançados, você pode fornecer sua própria instância de OpenAiApi e ExecutorService.
+ * <p>
+ * Thread safety: Esta classe é thread-safe se o underlying OkHttpClient e ExecutorService forem thread-safe.
+ *
+ * <h2>Recursos</h2>
+ * <ul>
+ *     <li>Listagem e recuperação de modelos</li>
+ *     <li>Completions de texto e chat (incluindo streaming)</li>
+ *     <li>Upload, recuperação e exclusão de arquivos</li>
+ *     <li>Fine-tuning e gerenciamento de trabalhos de fine-tuning</li>
+ *     <li>Geração, edição e variação de imagens</li>
+ *     <li>Transcrição e tradução de áudio</li>
+ *     <li>Moderação de conteúdo</li>
+ *     <li>Gerenciamento de assistentes, threads, mensagens e execuções</li>
+ *     <li>Informações de cobrança e assinatura</li>
+ * </ul>
+ *
+ * <h2>Personalização</h2>
+ * <ul>
+ *     <li>Suporte a clientes HTTP personalizados e tempo limite</li>
+ *     <li>Suporte a objeto ObjectMapper personalizado para serialização JSON</li>
+ *     <li>Desligamento elegante do ExecutorService</li>
+ * </ul>
+ *
+ * <h2>Dependências</h2>
+ * <ul>
+ *     <li>Retrofit para chamadas de API HTTP</li>
+ *     <li>OkHttp para cliente HTTP</li>
+ *     <li>RxJava2 para suporte a streaming reativo</li>
+ *     <li>Jackson para serialização JSON</li>
+ * </ul>
+ * 
+ * Foi baseado na biblioteca OpenAi Java de Theo Kanning, mas com modificações para suportar o LLM Studio.
+ *
+ * @author Pedro
+ */
 public class LLMService {
 
     private static final String BASE_URL = "http://localhost:1234/";
