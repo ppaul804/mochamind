@@ -6,11 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "IdentificadorDePerfil",
+            "request": "launch",
+            "mainClass": "br.com.ppaul.mochamind.IdentificadorDePerfil",
+            "projectName": "mochamind",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "ContadorDeTokens",
+            "request": "launch",
+            "mainClass": "br.com.ppaul.mochamind.services.ContadorDeTokens",
+            "projectName": "mochamind",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
             "name": "CategorizadorDeProdutos",
             "request": "launch",
             "mainClass": "br.com.ppaul.mochamind.CategorizadorDeProdutos",
             "projectName": "mochamind",
-            "envFile": "${workspaceFolder}/.env",
+            "envFile": "${workspaceFolder}/.env"
         },
         {
             "type": "java",
@@ -18,7 +34,7 @@
             "request": "launch",
             "mainClass": "br.com.ppaul.mochamind.TestaIntegracao",
             "projectName": "mochamind",
-            "envFile": "${workspaceFolder}/.env",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

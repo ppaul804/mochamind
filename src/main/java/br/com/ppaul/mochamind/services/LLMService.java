@@ -125,6 +125,15 @@ public class LLMService {
     /**
      * Creates a new LLMService that wraps OpenAiApi
      *
+     * @param timeout http read timeout, Duration.ZERO means no timeout
+     */
+    public LLMService(final Duration timeout) {
+        this("", timeout);
+    }
+
+    /**
+     * Creates a new LLMService that wraps OpenAiApi
+     *
      * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      * @param timeout http read timeout, Duration.ZERO means no timeout
      */
