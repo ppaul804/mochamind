@@ -55,58 +55,67 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * LLMService fornece uma API de alto nível para interagir com endpoints de LLM (Large Language Model) compatíveis com a API do OpenAI.
+ * LLMService fornece uma API de alto nível para interagir com endpoints de LLM
+ * (Large Language Model) compatíveis com a API do OpenAI.
  * <p>
- * Esta classe envolve a interface OpenAiApi e expõe métodos para gerenciamento de modelos, completions, chat, operações de arquivo,
- * fine-tuning, geração de imagem, transcrição e tradução de áudio, moderação, assistentes, threads, mensagens e informações de cobrança.
+ * Esta classe envolve a interface OpenAiApi e expõe métodos para gerenciamento
+ * de modelos, completions, chat, operações de arquivo,
+ * fine-tuning, geração de imagem, transcrição e tradução de áudio, moderação,
+ * assistentes, threads, mensagens e informações de cobrança.
  * <p>
- * Ela suporta operações síncronas e de streaming (Flowable) e lida com o parsing de erros para respostas da API do OpenAI.
+ * Ela suporta operações síncronas e de streaming (Flowable) e lida com o
+ * parsing de erros para respostas da API do OpenAI.
  * <p>
  * Uso típico:
+ * 
  * <pre>
- *     LLMService service = new LLMService("sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
- *     CompletionResult result = service.createCompletion(request);
+ * LLMService service = new LLMService("sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+ * CompletionResult result = service.createCompletion(request);
  * </pre>
  * <p>
- * Para cenários avançados, você pode fornecer sua própria instância de OpenAiApi e ExecutorService.
+ * Para cenários avançados, você pode fornecer sua própria instância de
+ * OpenAiApi e ExecutorService.
  * <p>
- * Thread safety: Esta classe é thread-safe se o underlying OkHttpClient e ExecutorService forem thread-safe.
+ * Thread safety: Esta classe é thread-safe se o underlying OkHttpClient e
+ * ExecutorService forem thread-safe.
  *
  * <h2>Recursos</h2>
  * <ul>
- *     <li>Listagem e recuperação de modelos</li>
- *     <li>Completions de texto e chat (incluindo streaming)</li>
- *     <li>Upload, recuperação e exclusão de arquivos</li>
- *     <li>Fine-tuning e gerenciamento de trabalhos de fine-tuning</li>
- *     <li>Geração, edição e variação de imagens</li>
- *     <li>Transcrição e tradução de áudio</li>
- *     <li>Moderação de conteúdo</li>
- *     <li>Gerenciamento de assistentes, threads, mensagens e execuções</li>
- *     <li>Informações de cobrança e assinatura</li>
+ * <li>Listagem e recuperação de modelos</li>
+ * <li>Completions de texto e chat (incluindo streaming)</li>
+ * <li>Upload, recuperação e exclusão de arquivos</li>
+ * <li>Fine-tuning e gerenciamento de trabalhos de fine-tuning</li>
+ * <li>Geração, edição e variação de imagens</li>
+ * <li>Transcrição e tradução de áudio</li>
+ * <li>Moderação de conteúdo</li>
+ * <li>Gerenciamento de assistentes, threads, mensagens e execuções</li>
+ * <li>Informações de cobrança e assinatura</li>
  * </ul>
  *
  * <h2>Personalização</h2>
  * <ul>
- *     <li>Suporte a clientes HTTP personalizados e tempo limite</li>
- *     <li>Suporte a objeto ObjectMapper personalizado para serialização JSON</li>
- *     <li>Desligamento elegante do ExecutorService</li>
+ * <li>Suporte a clientes HTTP personalizados e tempo limite</li>
+ * <li>Suporte a objeto ObjectMapper personalizado para serialização JSON</li>
+ * <li>Desligamento elegante do ExecutorService</li>
  * </ul>
  *
  * <h2>Dependências</h2>
  * <ul>
- *     <li>Retrofit para chamadas de API HTTP</li>
- *     <li>OkHttp para cliente HTTP</li>
- *     <li>RxJava2 para suporte a streaming reativo</li>
- *     <li>Jackson para serialização JSON</li>
+ * <li>Retrofit para chamadas de API HTTP</li>
+ * <li>OkHttp para cliente HTTP</li>
+ * <li>RxJava2 para suporte a streaming reativo</li>
+ * <li>Jackson para serialização JSON</li>
  * </ul>
  * 
- * Foi baseado na biblioteca OpenAi Java de Theo Kanning, mas com modificações para suportar o LLM Studio.
+ * Foi baseado na biblioteca OpenAi Java de Theo Kanning, mas com modificações
+ * para suportar o LLM Studio.
  *
  * @author Pedro
  */
 public class LLMService {
 
-    private static final String BASE_URL = "http://localhost:1234/";
+    private static final String BASE_URL = System.getenv("LLM_STUDIO_URL") != null ? System.getenv("LLM_STUDIO_URL")
+            : "https://api.openai.com/v1/";
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
     private static final ObjectMapper mapper = defaultObjectMapper();
 
@@ -134,7 +143,8 @@ public class LLMService {
     /**
      * Creates a new LLMService that wraps OpenAiApi
      *
-     * @param token   OpenAi token string "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+     * @param token   OpenAi token string
+     *                "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
      * @param timeout http read timeout, Duration.ZERO means no timeout
      */
     public LLMService(final String token, final Duration timeout) {
@@ -148,7 +158,8 @@ public class LLMService {
 
     /**
      * Creates a new OpenAiService that wraps OpenAiApi.
-     * Use this if you need more customization, but use OpenAiService(api, executorService) if you use streaming and
+     * Use this if you need more customization, but use OpenAiService(api,
+     * executorService) if you use streaming and
      * want to shut down instantly
      *
      * @param api OpenAiApi instance to use for all methods
@@ -160,13 +171,15 @@ public class LLMService {
 
     /**
      * Creates a new OpenAiService that wraps OpenAiApi.
-     * The ExecutorService must be the one you get from the client you created the api with
+     * The ExecutorService must be the one you get from the client you created the
+     * api with
      * otherwise shutdownExecutor() won't work.
      * <p>
      * Use this if you need more customization.
      *
      * @param api             OpenAiApi instance to use for all methods
-     * @param executorService the ExecutorService from client.dispatcher().executorService()
+     * @param executorService the ExecutorService from
+     *                        client.dispatcher().executorService()
      */
     public LLMService(final OpenAiApi api, final ExecutorService executorService) {
         this.api = api;
@@ -500,7 +513,8 @@ public class LLMService {
         return execute(api.listMessageFiles(threadId, messageId));
     }
 
-    public OpenAiResponse<MessageFile> listMessageFiles(String threadId, String messageId, ListSearchParameters params) {
+    public OpenAiResponse<MessageFile> listMessageFiles(String threadId, String messageId,
+            ListSearchParameters params) {
         Map<String, Object> queryParameters = mapper.convertValue(params, new TypeReference<Map<String, Object>>() {
         });
         return execute(api.listMessageFiles(threadId, messageId, queryParameters));
@@ -543,7 +557,8 @@ public class LLMService {
         return execute(api.retrieveRunStep(threadId, runId, stepId));
     }
 
-    public OpenAiResponse<RunStep> listRunSteps(String threadId, String runId, ListSearchParameters listSearchParameters) {
+    public OpenAiResponse<RunStep> listRunSteps(String threadId, String runId,
+            ListSearchParameters listSearchParameters) {
         Map<String, String> search = new HashMap<>();
         if (listSearchParameters != null) {
             ObjectMapper mapper = defaultObjectMapper();
@@ -553,7 +568,8 @@ public class LLMService {
     }
 
     /**
-     * Calls the Open AI api, returns the response, and parses error messages if the request fails
+     * Calls the Open AI api, returns the response, and parses error messages if the
+     * request fails
      */
     public static <T> T execute(Single<T> apiCall) {
         try {
@@ -591,7 +607,8 @@ public class LLMService {
      * @param emitDone If true the last message ([DONE]) is emitted
      */
     public static Flowable<SSE> stream(Call<ResponseBody> apiCall, boolean emitDone) {
-        return Flowable.create(emitter -> apiCall.enqueue(new ResponseBodyCallback(emitter, emitDone)), BackpressureStrategy.BUFFER);
+        return Flowable.create(emitter -> apiCall.enqueue(new ResponseBodyCallback(emitter, emitDone)),
+                BackpressureStrategy.BUFFER);
     }
 
     /**
@@ -664,12 +681,17 @@ public class LLMService {
                     functionCall.setName((functionCall.getName() == null ? "" : functionCall.getName()) + namePart);
                 }
                 if (messageChunk.getFunctionCall().getArguments() != null) {
-                    String argumentsPart = messageChunk.getFunctionCall().getArguments() == null ? "" : messageChunk.getFunctionCall().getArguments().asText();
-                    functionCall.setArguments(new TextNode((functionCall.getArguments() == null ? "" : functionCall.getArguments().asText()) + argumentsPart));
+                    String argumentsPart = messageChunk.getFunctionCall().getArguments() == null ? ""
+                            : messageChunk.getFunctionCall().getArguments().asText();
+                    functionCall.setArguments(new TextNode(
+                            (functionCall.getArguments() == null ? "" : functionCall.getArguments().asText())
+                                    + argumentsPart));
                 }
                 accumulatedMessage.setFunctionCall(functionCall);
             } else {
-                accumulatedMessage.setContent((accumulatedMessage.getContent() == null ? "" : accumulatedMessage.getContent()) + (messageChunk.getContent() == null ? "" : messageChunk.getContent()));
+                accumulatedMessage
+                        .setContent((accumulatedMessage.getContent() == null ? "" : accumulatedMessage.getContent())
+                                + (messageChunk.getContent() == null ? "" : messageChunk.getContent()));
             }
 
             if (chunk.getChoices().get(0).getFinishReason() != null) { // last
