@@ -6,6 +6,14 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AnaliseDeSentimentos",
+            "request": "launch",
+            "mainClass": "br.com.ppaul.mochamind.AnaliseDeSentimentos",
+            "projectName": "mochamind",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
             "name": "IdentificadorDePerfil",
             "request": "launch",
             "mainClass": "br.com.ppaul.mochamind.IdentificadorDePerfil",
